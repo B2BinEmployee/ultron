@@ -23,4 +23,8 @@ include(":ultron-android")
 include(":ultron-compose")
 include(":ultron-allure")
 include(":ultron-common")
-include(":composeApp")
+
+// Исключаем composeApp при сборке в JitPack
+if (System.getenv("JITPACK") != "true") {
+    include(":composeApp")
+}

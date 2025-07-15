@@ -7,7 +7,7 @@ before_install:
 
 build:
   commands:
-    - ./gradlew clean -Pgroup=com.github.B2BinEmployee -Pversion=$JITPACK_TAG -xtest -xlint :ultron-common:assembleAndroidRelease :ultron-common:assembleJar :ultron-compose:assembleAndroidRelease :ultron-compose:assembleJar :ultron-android:assembleRelease :ultron-allure:assembleRelease publishToMavenLocal
+    - ./gradlew clean -Pgroup=com.github.B2BinEmployee -Pversion=$JITPACK_TAG -xtest -xlint :ultron-common:assembleAndroidRelease :ultron-common:assembleJar :ultron-compose:assembleAndroidRelease :ultron-compose:assembleJar :ultron-android:assembleRelease :ultron-allure:assembleRelease :ultron-common:publishToMavenLocal :ultron-compose:publishToMavenLocal :ultron-android:publishToMavenLocal :ultron-allure:publishToMavenLocal
 
 env:
   KOTLIN_NATIVE_IGNORE_DISABLED_TARGETS: true
