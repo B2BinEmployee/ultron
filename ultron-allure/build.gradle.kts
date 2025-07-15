@@ -10,7 +10,7 @@ group = project.findProperty("GROUP")!!
 version =  project.findProperty("VERSION_NAME")!!
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 android {
@@ -29,8 +29,8 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility = JavaVersion.VERSION_11
-        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
     }
 
     publishing {

@@ -1,6 +1,8 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.atiurin.ultron.utils
 
-import kotlinx.datetime.Clock
+import kotlin.time.*
 
 fun now() = Clock.System.now()
 fun nowMs() = now().toEpochMilliseconds()
