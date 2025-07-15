@@ -173,23 +173,29 @@ publishing {
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach {
-    dependsOn(tasks.withType<Sign>())
+    if (System.getenv("JITPACK") != "true") {
+        dependsOn(tasks.withType<Sign>())
+        mustRunAfter(tasks.withType<Sign>())
+    }
     dependsOn(ultronComposeJavadocJar)
     dependsOn(tasks.withType<Jar>())
-    mustRunAfter(tasks.withType<Sign>())
 }
 
 tasks.withType<PublishToMavenLocal>().configureEach {
-    dependsOn("signKotlinMultiplatformPublication")
-    dependsOn("signAndroidReleasePublication")
-    dependsOn("signDesktopPublication")
+    if (System.getenv("JITPACK") != "true") {
+        dependsOn("signKotlinMultiplatformPublication")
+        dependsOn("signAndroidReleasePublication")
+        dependsOn("signDesktopPublication")
 
-    mustRunAfter("signKotlinMultiplatformPublication")
-    mustRunAfter("signAndroidReleasePublication")
-    mustRunAfter("signDesktopPublication")
+        mustRunAfter("signKotlinMultiplatformPublication")
+        mustRunAfter("signAndroidReleasePublication")
+        mustRunAfter("signDesktopPublication")
+    }
 }
 signing {
-    println("Signing lib...")
-    useGpgCmd()
-    sign(publishing.publications)
+    if (System.getenv("JITPACK") != "true") {
+        println("Signing lib...")
+        useGpgCmd()
+        sign(publishing.publications)
+    }
 }

@@ -104,9 +104,11 @@ publishing {
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach {
-    dependsOn(tasks.withType<Sign>())
+    if (System.getenv("JITPACK") != "true") {
+        dependsOn(tasks.withType<Sign>())
+        mustRunAfter(tasks.withType<Sign>())
+    }
     dependsOn(javadocJar)
-    mustRunAfter(tasks.withType<Sign>())
 }
 
 tasks.named("generateMetadataFileForReleasePublication") {
@@ -114,7 +116,9 @@ tasks.named("generateMetadataFileForReleasePublication") {
 }
 
 signing {
-    println("Signing lib...")
-    useGpgCmd()
-    sign(publishing.publications)
+    if (System.getenv("JITPACK") != "true") {
+        println("Signing lib...")
+        useGpgCmd()
+        sign(publishing.publications)
+    }
 }
