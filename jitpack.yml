@@ -9,8 +9,7 @@ build:
   commands:
     - ./gradlew clean -Pgroup=com.github.B2BinEmployee -Pversion=$JITPACK_TAG -xtest -xlint :ultron-common:assembleAndroidRelease :ultron-common:assembleJar :ultron-compose:assembleAndroidRelease :ultron-compose:assembleJar :ultron-android:assembleRelease :ultron-allure:assembleRelease publishToMavenLocal
 
-# Ограничиваем сборку только Android и JVM таргетами
 env:
-  - KOTLIN_NATIVE_IGNORE_DISABLED_TARGETS=true
-  - ANDROID_SDK_ROOT=/opt/android-sdk-linux
-  - JITPACK=true 
+  KOTLIN_NATIVE_IGNORE_DISABLED_TARGETS: true
+  ANDROID_SDK_ROOT: /opt/android-sdk-linux
+  JITPACK: true 
