@@ -30,19 +30,23 @@ kotlin {
         }
     }
     jvm("desktop")
-    macosX64()
-    macosArm64()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs(){
-        browser()
-        nodejs()
-    }
-    js(IR){
-        browser()
-        nodejs()
+    
+    // Отключаем нативные таргеты для JitPack
+    if (!System.getenv("JITPACK").toBoolean()) {
+        macosX64()
+        macosArm64()
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+        @OptIn(ExperimentalWasmDsl::class)
+        wasmJs(){
+            browser()
+            nodejs()
+        }
+        js(IR){
+            browser()
+            nodejs()
+        }
     }
 
     @OptIn(ExperimentalComposeLibrary::class)
@@ -81,21 +85,23 @@ kotlin {
                 implementation(compose.uiTest)
             }
         }
-        val nativeMain by getting { dependsOn(shared) }
+        if (!System.getenv("JITPACK").toBoolean()) {
+            val nativeMain by getting { dependsOn(shared) }
 
-        val jsWasmMain by creating {
-            dependsOn(shared)
-        }
-        val jsMain by getting {
-            dependsOn(jsWasmMain)
-            dependencies {
-                implementation(kotlin("stdlib-js"))
+            val jsWasmMain by creating {
+                dependsOn(shared)
             }
-        }
-        val wasmJsMain by getting {
-            dependsOn(jsWasmMain)
-            dependencies {
-                implementation(kotlin("stdlib"))
+            val jsMain by getting {
+                dependsOn(jsWasmMain)
+                dependencies {
+                    implementation(kotlin("stdlib-js"))
+                }
+            }
+            val wasmJsMain by getting {
+                dependsOn(jsWasmMain)
+                dependencies {
+                    implementation(kotlin("stdlib"))
+                }
             }
         }
     }
@@ -177,24 +183,10 @@ tasks.withType<PublishToMavenLocal>().configureEach {
     dependsOn("signKotlinMultiplatformPublication")
     dependsOn("signAndroidReleasePublication")
     dependsOn("signDesktopPublication")
-    dependsOn("signIosArm64Publication")
-    dependsOn("signIosSimulatorArm64Publication")
-    dependsOn("signIosX64Publication")
-    dependsOn("signJsPublication")
-    dependsOn("signWasmJsPublication")
-    dependsOn("signMacosArm64Publication")
-    dependsOn("signMacosX64Publication")
 
     mustRunAfter("signKotlinMultiplatformPublication")
     mustRunAfter("signAndroidReleasePublication")
     mustRunAfter("signDesktopPublication")
-    mustRunAfter("signIosArm64Publication")
-    mustRunAfter("signIosSimulatorArm64Publication")
-    mustRunAfter("signIosX64Publication")
-    mustRunAfter("signJsPublication")
-    mustRunAfter("signWasmJsPublication")
-    mustRunAfter("signMacosArm64Publication")
-    mustRunAfter("signMacosX64Publication")
 }
 signing {
     println("Signing lib...")
